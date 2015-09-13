@@ -1,5 +1,5 @@
 # ScreenSnap
-## A little, unobtrusive screenshot tool for BlackBerry OS 7
+## A little, unobtrusive screenshot tool for BBOS 7
 
 I recently acquired a BlackBerry 9900 Bold, but noticed that there was a distinct lack of still-functioning and free screenshot apps, so I set out to write my own.
 
