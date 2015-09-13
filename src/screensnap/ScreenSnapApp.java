@@ -14,7 +14,10 @@ import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.system.Display;
 import net.rim.device.api.system.PNGEncodedImage;
+import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.UiEngine;
+import net.rim.device.api.ui.component.Dialog;
 
 /**
  * This class extends the UiApplication class, providing a
@@ -52,6 +55,7 @@ public class ScreenSnapApp extends UiApplication {
     	System.out.println("ScreenSnap: deactivate()");
     }
     
+    Dialog notification = null;
     public boolean takeScreenshot() throws IOException {
     	System.out.println("ScreenSnap: Taking Screenshot");
     	// Get the dimensions of the screen.
@@ -115,6 +119,22 @@ public class ScreenSnapApp extends UiApplication {
     	// Close all Connections.
     	out.close();
     	fc.close();
+    	
+    	Object displayDialogsObj = persistentStore.get("displayDialogs");
+		boolean displayDialogs = false;
+    	if(displayDialogsObj != null) // Inline ternary operators would not work here, for some reason
+    		displayDialogs = ((Integer)displayDialogsObj).intValue() == 1;
+    	
+    	if(displayDialogs) {
+    		if(notification != null)
+        		notification.close();
+        	
+        	notification = new Dialog(Dialog.D_OK, "Saved screenshot to " + filePath, 0, null, 0);
+        	synchronized (UiApplication.getEventLock()) {
+        		UiEngine ui = Ui.getUiEngine();
+        		ui.pushGlobalScreen(notification, 1, UiEngine.GLOBAL_QUEUE);
+        	}
+    	}
     	
     	return true;
     } 
