@@ -8,7 +8,7 @@ I recently acquired a BlackBerry 9900 Bold, but noticed that there was a distinc
 This is the main screen of ScreenSnap:
 
 ![Screenshot of ScreenSnap's main screen](https://cloud.githubusercontent.com/assets/676069/9837120/301ca0a6-5a35-11e5-8a0d-b6fd596bb4b3.png)
-![Screenshot of ScreenSnap's optional dialogs](https://cloud.githubusercontent.com/assets/676069/9837121/3022ca62-5a35-11e5-8d49-8d7e15109d29.png)
+![Screenshot of ScreenSnap's optional dialog](https://cloud.githubusercontent.com/assets/676069/9837121/3022ca62-5a35-11e5-8d49-8d7e15109d29.png)
 
 First, you’ll need to set your Convenience Key action to Do Nothing. ScreenSnap will listen to Convenience Key presses regardless, but this way you’ll avoid accidental app launches.
 Then, install ScreenSnap and start it. From now on, ScreenSnap will always run in the background and autostart whenever you reboot your device.
@@ -28,3 +28,4 @@ Check the Releases tab for signed downloadable versions.
 ## Known Things That You Don’t Need To Open Issues For
 
 * Screenshots are saved as PNGs only. If this is a problem for you, I recommend getting a larger memory card.
+* Taking screenshots of the lock screen is currently not possible. This might never get fixed due to lack of documentation.
