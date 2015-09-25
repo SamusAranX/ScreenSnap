@@ -1,6 +1,7 @@
 package screensnap;
 
 import net.rim.device.api.system.ApplicationDescriptor;
+import net.rim.device.api.ui.DrawTextParam;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Ui;
@@ -17,6 +18,9 @@ import net.rim.device.api.ui.Font;
  * behavior for BlackBerry GUI applications.
  */
 public final class ConfigScreen extends MainScreen {
+	
+	CheckboxField cbf1, cbf2;
+	ButtonField bbf;
 	
 	public ConfigScreen() {
 		// Get the app name  
@@ -47,8 +51,9 @@ public final class ConfigScreen extends MainScreen {
     	if(storeOnCardObj != null) // Inline ternary operators would not work here, for some reason
     		storeOnCard = ((Integer)storeOnCardObj).intValue() == 1;
 
-		CheckboxField cbf1 = new CheckboxField("Store screenshots on " + mediaCardName, storeOnCard); // Initialize a check box with the previously loaded value
-		cbf1.setEnabled(((ScreenSnapApp)UiApplication.getUiApplication()).mediaCardPresent); // there's not much point to this if there is no media card inserted
+    	String cbf1Text = ((ScreenSnapApp)UiApplication.getUiApplication()).mediaCardPresent ? "Store screenshots on " + mediaCardName : "No media card present";
+		cbf1 = new CheckboxField(cbf1Text, storeOnCard); // Initialize a check box with the previously loaded value
+		cbf1.setEditable(((ScreenSnapApp)UiApplication.getUiApplication()).mediaCardPresent); // there's not much point to this if there is no media card inserted
 		cbf1.setChangeListener(new FieldChangeListener() {
             public void fieldChanged(Field field, int context) {
         		CheckboxField cbf = (CheckboxField)field;
@@ -67,7 +72,7 @@ public final class ConfigScreen extends MainScreen {
     	if(displayDialogsObj != null) // Inline ternary operators would not work here, for some reason
     		displayDialogs = ((Integer)displayDialogsObj).intValue() == 1;
 		
-		CheckboxField cbf2 = new CheckboxField("Display dialogs when taking screenshots", displayDialogs); // Initialize a check box with the previously loaded value
+		cbf2 = new CheckboxField("Display dialogs when taking screenshots", displayDialogs); // Initialize a check box with the previously loaded value
 		cbf2.setChangeListener(new FieldChangeListener() {
             public void fieldChanged(Field field, int context) {
         		CheckboxField cbf = (CheckboxField)field;
@@ -81,7 +86,15 @@ public final class ConfigScreen extends MainScreen {
 		/*
 		* Stuff for the exit button
 		*/
-		ButtonField bbf = new ButtonField("Exit ScreenSnap", Field.FIELD_HCENTER); // Center the button horizontally
+		bbf = new ButtonField("Exit ScreenSnap", Field.FIELD_HCENTER) { // Center the button horizontally
+			// Make sure the text inside the button is always readable
+			// Without this, the text might get cut off when changing fonts while the app is running in the background
+			public int getPreferredWidth() {
+				DrawTextParam dtp = new DrawTextParam();
+				dtp.iTruncateWithEllipsis = DrawTextParam.NO_TRUNCATE_WITH_ELLIPSIS;
+				return getFont().measureText(getLabel(), 0, getLabel().length(), dtp, null);
+			}
+		};
 		bbf.setMargin(10, 0, 0, 0); // Give the button a bit of top margin
 		bbf.setChangeListener(new FieldChangeListener() {
             public void fieldChanged(Field field, int context) {
@@ -96,7 +109,10 @@ public final class ConfigScreen extends MainScreen {
 		this.add(vfm);
 		
 		// gotta do this after everything's been added to this screen because otherwise it'll segfault
-		cbf1.setFocus();
+		if(cbf1.isEditable())
+			cbf1.setFocus();
+		else
+			cbf2.setFocus();
 	}
 
 	public void onDisplay() {
