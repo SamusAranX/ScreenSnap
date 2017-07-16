@@ -55,7 +55,7 @@ public class PersistentStoreHelper implements Persistable {  // only Persistable
 		return hashValLong;
 	}
 
-	/** This constructor is private to en */
+	/** constructor private to force users to call getInstance() */
 	private PersistentStoreHelper() {
 		final long KEY = getLongKey("com.peterwunder.ScreenSnap");
 		persistentObject = PersistentStore.getPersistentObject(KEY);

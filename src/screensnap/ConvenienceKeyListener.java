@@ -24,6 +24,7 @@ public final class ConvenienceKeyListener implements KeyListener {
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				System.out.println("ScreenSnap: " + e.getMessage());
 				e.printStackTrace();
 				System.out.println("ScreenSnap: Error, couldn't take screenshot.");
 			}
